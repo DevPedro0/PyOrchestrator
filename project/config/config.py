@@ -73,4 +73,5 @@ class Server():
         print(f"Url: {self.url}")
         print(f"Responses: {self.responses}")
         print(f"Stats Connection: {self.json.get("connect", [])}")
+        print(f"{s*20} ===== STATUS SERVER ===== {s*20}")
 
