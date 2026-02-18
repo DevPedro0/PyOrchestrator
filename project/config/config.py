@@ -11,38 +11,42 @@ class Server():
         self.heating = kwargs.get("heats")
         self.load = False
         
-    async def error(self, status = 404):
+    def error(self, status = 404):
         # Error Server Load
         if not self.load:
             msg_error = f"[ERROR - {status}] It is not possible to run tasks on the server when it is turned off.\nFor educational purposes, turn on the server."
             raise Exception(msg_error)
-    
+    # Connect
     async def connect(self, IP, address_MAC, identified, user_Agent, stats:dict, *args, **kwargs):
-        await self.error()
+        self.error()
         print("Init Connection...")
         # Defined Params Connect
         self.json["connect"] = {
             "IP": IP,
             "MAC": address_MAC,
-            "Id": identified,
-            "Agents_User": user_Agent,
             "Stats": stats
         }
         return self.json["connect"]
-        
+    
+    # Methdos Controls User    
     async def response(self, status:int = 404):
-        await self.error(status)           
+        self.error(status)           
         return self.json.get("response", status)
-        
+    
     async def lock_connection(self, defined_status:int = 404, list_user:str|list = [], \
                          time_block = 30, permanent_Lock = False):
-        await self.error()
+        self.error()
     
+    # Modes
     async def on(self, msg = "Server On..."):
         await asy.sleep(2)
         if self.load:
             print("[INFO]: Server Is Connected!!")
+            self.show_status()
             return
+        elif msg == "":
+            msg = "Server On..."
+            
         print(f"{msg}")
         self.load = True
         
@@ -50,11 +54,14 @@ class Server():
         await asy.sleep(1)
         if self.load:
             print("Disconected Server...")
+            self.show_status()
         else:
             raise Exception("Server not Init...")
+        
         self.load = False
         print(f"{msg}")
     
+    # Propertys
     @property
     def _url(self) -> str:
         return self.url
@@ -66,12 +73,13 @@ class Server():
         self.url = value
         return self.url
     
-    @property
-    def _server(self):
+    # Show Status
+    def show_status(self):
         s = "#"
-        print(f"{s*20} ===== STATUS SERVER ===== {s*20}")
+        print(f"\n{s*20} ===== STATUS SERVER ===== {s*20}")
         print(f"Url: {self.url}")
         print(f"Responses: {self.responses}")
-        print(f"Stats Connection: {self.json.get("connect", [])}")
-        print(f"{s*20} ===== STATUS SERVER ===== {s*20}")
-
+        print(f"Stats Connection: {self.json.get('connect', [])}")
+        print(f"{s*20} ===== STATUS SERVER ===== {s*20}\n")
+        
+        return
