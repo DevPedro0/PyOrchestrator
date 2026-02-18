@@ -22,9 +22,9 @@ class Server():
         print("Init Connection...")
         # Defined Params Connect
         self.json["connect"] = {
-            "IP": IP,
-            "MAC": address_MAC,
-            "Stats": stats
+            "ip": IP,
+            "mac": address_MAC,
+            "stats": stats
         }
         return self.json["connect"]
     
@@ -83,3 +83,16 @@ class Server():
         print(f"{s*20} ===== STATUS SERVER ===== {s*20}\n")
         
         return
+    
+    # By Init
+    def __getattr__(self, it:str):
+        d = None
+        if (not callable(it)):
+            self.__dict__[it] = d
+    
+    # By Class
+    @classmethod
+    def __getattr__(cls, it):
+        d = None
+        if (not callable(it)):
+            cls.__dict__[it] = d

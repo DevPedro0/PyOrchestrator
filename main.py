@@ -2,20 +2,21 @@ from project.config.config import Server
 
 # Other Libs
 import requests as r
-import os
-import platform
 import socket as s
 import asyncio as asy
+import pandas as pd
+import uuid as u
+import numpy as np
  
 class Main():
     def __init__(self, url:str, responses = {}):
         self.url = url
         self.responses = responses
         self.json = {}
-        
-    def add(self, key:str, value, *args, **kwargs) -> None:
-        self.json[key] = value
     
+    def generate_id(self):
+        return f"{len(self.json)}"
+        
     async def connect(self) -> Server:
         if r.get(self.url).status_code != 200:
             self.STATUS = 404
@@ -25,23 +26,41 @@ class Main():
         await S.on()
         return S
     
-    def info(self, HOST, PORT = 80):
-        parcial_list = []
+    def info(self, HOST = None, PORT = 80):
         address = s.getaddrinfo(
-            s.gethostname(),
+            HOST if HOST is not None else s.gethostname(),
             PORT, 
             proto = s.IPPROTO_TCP
         )
         # Descompactar
+        ID = self.generate_id()
+        self.json[ID] = {
+            "ip": {},
+            "mac": ...,
+            "type": ...,
+            "protocol": ...,
+            "stats": ...
+        }
         for i in address:
             family, type_, protocol, can, sockaddr = i
-            MAC = sockaddr[0]
+            mac = u.getnode()
+            IP = sockaddr[0]
+            MAC = ':'.join(("%012X" % mac)[i:i+2] for i in range(0, 12, 2))
             if (family == s.AF_INET) or (family == s.AF_INET6):
-                k_string = f"{family}_INET_INFO_MAC_{MAC.split(":")[-1]}" \
+                k_string = f"{family}_INET_INFO_MAC_{IP.split(":")[-1]}" \
                     if family == s.AF_INET6 else f"{family}_INET_INFO_MAC_"
-                    
-                self.add(k_string, [[MAC, PORT, HOST], protocol])
+                json_ip = self.json[ID]["ip"]
+                if k_string not in json_ip:
+                    json_ip[k_string] = {}
+                json_ip[k_string] = IP
                 
+            self.json[ID].update({
+                "mac": MAC,
+                "type": type_,
+                "protocol": protocol,
+                "stats": {}
+            })
+            
     def components(self, request):
         # Options
         ...
@@ -49,16 +68,16 @@ class Main():
     def __call__(self, *args, **kwds):
         pass
     
-    @property
-    def _json(self):
-        return self.json
-        
+    def __getattr__(self, it:str):
+        d = None
+        if (not callable(it)):
+            self.__dict__[it] = d
+    
 if __name__ == "__main__":
-    try:
+    async def main():
         url = "https://www.google.com"
         Google = Main(url, {})
-        Google.info(1234)
-        print(Google._json)
-        
-    except r.exceptions.ConnectionError as E:
-        raise r.exceptions.ConnectionError(f"URL: {url} not Is Valid, imeplement your URL again...")
+        Google.info()
+        Google.info()
+        Connect = await Google.connect()
+    asy.run(main())
