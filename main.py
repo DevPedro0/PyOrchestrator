@@ -73,11 +73,11 @@ class Main():
         if (not callable(it)):
             self.__dict__[it] = d
     
-if __name__ == "__main__":
-    async def main():
-        url = "https://www.google.com"
-        Google = Main(url, {})
-        Google.info()
-        Google.info()
-        Connect = await Google.connect()
-    asy.run(main())
+# if __name__ == "__main__":
+#     async def main():
+#         url = "https://www.google.com"
+#         Google = Main(url, {})
+#         Google.info()
+#         Google.info()
+#         Connect = await Google.connect()
+#     asy.run(main())
