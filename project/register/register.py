@@ -17,11 +17,12 @@ class Register():
     
     # Campus 
     def CPF(self):
-        if len(self.cpf) != 9:
+        if len(self.cpf) != 9 | len(self.cpf) != 11:
             raise Exception(f"The CPF value does not match reality; it has {len(self.cpf)} digits.")
         
         while True:
             n = self.cpf.__len__()
+            
             start = 1 if n == 9 else 0
             char_save = 0
             if n != 11:
@@ -30,6 +31,7 @@ class Register():
                     char_save += char
                     if (Index+1 == n):
                         calc = char_save % 11
+                        calc = 0 if calc >= 10 else calc
                         self.cpf += str(calc)
             else:
                 return self.cpf
@@ -58,5 +60,5 @@ class Register():
             # Block User or Redirect User for Page Register
             ...
     
-R = Register("152627416", "Pedro", "Henrique", "pedroexemplo@gmail.com", 1234, 1234)
-R.CPF()
+R = Register("168995350", "Pedro", "Henrique", "pedroexemplo@gmail.com", 1234, 1234)
+print(R._CPF)
