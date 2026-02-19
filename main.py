@@ -36,10 +36,10 @@ class Main():
         ID = self.generate_id()
         self.json[ID] = {
             "ip": {},
-            "mac": ...,
-            "type": ...,
-            "protocol": ...,
-            "stats": ...
+            "mac": None,
+            "type": None,
+            "protocol": None,
+            "stats": None
         }
         for i in address:
             family, type_, protocol, can, sockaddr = i
@@ -64,6 +64,9 @@ class Main():
     def components(self, request):
         # Options
         ...
+        
+    def show_status(self, cols = []):
+        ...
     
     def __call__(self, *args, **kwds):
         pass
@@ -73,11 +76,11 @@ class Main():
         if (not callable(it)):
             self.__dict__[it] = d
     
-# if __name__ == "__main__":
-#     async def main():
-#         url = "https://www.google.com"
-#         Google = Main(url, {})
-#         Google.info()
-#         Google.info()
-#         Connect = await Google.connect()
-#     asy.run(main())
+if __name__ == "__main__":
+    async def main():
+        url = "https://www.google.com"
+        Google = Main(url, {})
+        Google.info()
+        Google.info()
+        Connect = await Google.connect()
+    asy.run(main())

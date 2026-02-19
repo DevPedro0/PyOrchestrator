@@ -5,7 +5,7 @@ import base64
 
 class Register():
     confirm_register = False
-    def __init__(self, cpf, name, surname, email, password, confirm_password, *args, **kwargs):
+    def __init__(self, cpf:str, name, surname, email, password, confirm_password, *args, **kwargs):
         self.cpf = cpf
         self.name = name
         self.surname = surname
@@ -14,13 +14,15 @@ class Register():
         self.c_password = confirm_password
         self.a = args
         self.status_user = {}
+        self.validate()
+    
+    def validate(self):
+       ...
     
     # Campus 
     def CPF(self):
-        if len(self.cpf) != 9 | len(self.cpf) != 11:
-            raise Exception(f"The CPF value does not match reality; it has {len(self.cpf)} digits.")
-        
         while True:
+            # Construct and Validate CPF Number
             n = self.cpf.__len__()
             
             start = 1 if n == 9 else 0
@@ -34,7 +36,7 @@ class Register():
                         calc = 0 if calc >= 10 else calc
                         self.cpf += str(calc)
             else:
-                return self.cpf
+                break
             
     def EMAIL(self):
         return self.email
@@ -60,5 +62,5 @@ class Register():
             # Block User or Redirect User for Page Register
             ...
     
-R = Register("168995350", "Pedro", "Henrique", "pedroexemplo@gmail.com", 1234, 1234)
+R = Register("16899535120", "Pedro", "Henrique", "pedroexemplo@gmail.com", 1234, 1234)
 print(R._CPF)
